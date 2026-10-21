@@ -173,5 +173,5 @@ The project is kept as it was submitted; nothing below has been fixed.
 ## Credits
 
 - The assignment, the original game engine and the tournament were provided by the teaching team of the Symbolic AI course at Université Paris-Saclay. The first version of `ParallelMCTSStrategy.java` started from the course's student skeleton (see the first commit).
-- Agent code: the five members of the team.
+- Agent code: the four members of the team.
 - Standalone engine in `src/engine`, baselines, benchmark harness, `run.sh` and the original README: Guillaume Mombellet.
