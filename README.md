@@ -1,5 +1,7 @@
 # dots-and-boxes-ai
 
+> **Fork of [momgui/dots-and-boxes-ai](https://github.com/momgui/dots-and-boxes-ai)** by Guillaume Mombellet, my teammate on this project. The code and the git history are his repository's, unchanged; this fork only adds the documentation of my own contribution (sections [Context](#context), [My contribution](#my-contribution), [Known limitations](#known-limitations) and [Credits](#credits) at the end of this file). — Carlos Clement
+
 Dots and Boxes agent: alpha-beta + PVS + Zobrist transposition table + chain-parity heuristic, plus a parallel MCTS. 1st of 8 teams, Symbolic AI course tournament, Université Paris-Saclay.
 
 ![Final position of game 1 of the alpha-beta vs Greedy benchmark: alpha-beta 19, Greedy 6](docs/final-board.png)
@@ -139,3 +141,37 @@ src/
 ├── baselines/                    Random and Greedy players
 └── arena/                        Arena (match runner), BoardImage (PNG), InstrumentedAlphaBeta
 ```
+
+## Context
+
+- **Course:** Symbolic AI (*IA symbolique*), third year of the Computer Science–Mathematics double-degree bachelor (LDD Info-Maths), Université Paris-Saclay, spring 2026.
+- **Assignment:** write a Dots and Boxes agent for the course's game engine; the agents of all teams then played a tournament against each other. Our alpha-beta agent finished 1st of 8 teams.
+- **Team:** five students. The repository above was published afterwards by Guillaume Mombellet, who also wrote the standalone engine, the baselines and the benchmark harness in October 2026 so that the agents run outside the course infrastructure.
+
+## My contribution
+
+What I did in the team:
+
+- **The evaluation function.** This was my part of the agent: the heuristic that the alpha-beta search calls at every leaf. The version used in the tournament is [`src/alphabeta/heuristicv2.java`](src/alphabeta/heuristicv2.java): game-phase weights, chain and loop detection with a union-find, the long-chain parity rule, the double-dealing estimate and the move-category mobility term described in [Evaluation](#evaluation-heuristicv2java).
+- **The first versions of the search agents**, alpha-beta and a greedy player, which the team then built on. Those early versions are not in this repository: the alpha-beta agent here is the team's final one (`AlphaBetaTTStrategy.java`), and the Greedy player in `src/baselines` was rewritten in 2026 for the benchmark.
+- **Some of the tests** we used during development. They relied on the course engine and are not in this repository either.
+
+The other components (transposition table, Zobrist hashing, PVS, time management, parallel MCTS) were written by other members of the team. The code was imported into this repository in a single commit after the course, so the git history cannot show who wrote which part; the description above is mine and was checked with Guillaume.
+
+## Known limitations
+
+The project is kept as it was submitted; nothing below has been fixed.
+
+- **The tournament cannot be replayed.** The course engine and the other teams' agents are not public, so the 1st place is not reproducible here; the benchmark above only plays against Random, Greedy and our own MCTS, over a small number of games.
+- **Hand-tuned evaluation.** The weights in `heuristicv2.java` were set by hand during the course, without a systematic tuning or an ablation study, so the contribution of each term is not measured.
+- **Approximate chain detection.** A group counts as a long chain if it holds a box with 3 sides and has at least 3 boxes, and as a loop if it has at least 4 boxes and no such box. This is a simplification of the real chain/loop analysis.
+- **Comments that do not match the code** in `heuristicv2.java`: the header says "zero allocation", but each call allocates a few small arrays; the comment on `dangerousBoxes` mentions boxes with 2 sides, but the code counts boxes with 3 sides.
+- **Fragile `undo()`.** It reads the engine's private `boxes` array through reflection, so it depends on the engine's internal field name.
+- **Search details**: the Zobrist key is recomputed from scratch at every node instead of being updated incrementally, and the root moves are not reordered by the transposition table.
+- **The MCTS is weak**: it loses 30 of 40 games to Greedy in the benchmark, and its node prior `sigmoid(score / 3000)` is in practice a constant close to 0.5.
+
+## Credits
+
+- The assignment, the original game engine and the tournament were provided by the teaching team of the Symbolic AI course at Université Paris-Saclay. The first version of `ParallelMCTSStrategy.java` started from the course's student skeleton (see the first commit).
+- Agent code: the five members of the team.
+- Standalone engine in `src/engine`, baselines, benchmark harness, `run.sh` and the original README: Guillaume Mombellet.
