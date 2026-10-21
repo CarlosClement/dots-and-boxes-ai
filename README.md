@@ -146,7 +146,7 @@ src/
 
 - **Course:** Symbolic AI (*IA symbolique*), third year of the Computer Science–Mathematics double-degree bachelor (LDD Info-Maths), Université Paris-Saclay, spring 2026.
 - **Assignment:** write a Dots and Boxes agent for the course's game engine; the agents of all teams then played a tournament against each other. Our alpha-beta agent finished 1st of 8 teams.
-- **Team:** five students. The repository above was published afterwards by Guillaume Mombellet, who also wrote the standalone engine, the baselines and the benchmark harness in October 2026 so that the agents run outside the course infrastructure.
+- **Team:** four students. The repository above was published afterwards by Guillaume Mombellet, who also wrote the standalone engine, the baselines and the benchmark harness in October 2026 so that the agents run outside the course infrastructure.
 
 ## My contribution
 
